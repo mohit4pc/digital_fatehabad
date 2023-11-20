@@ -2,20 +2,38 @@ const Category = require("../models/Category");
 
 const categoryController = {
   getAllCategories: async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const totalCategories = await Category.countDocuments();
+    const totalPages = Math.ceil(totalCategories / limit);
     try {
-      const categories = await Category.find();
-      res.json(categories);
+      const categories = await Category.find().skip(skip).limit(limit);
+      res.json({
+        status: true,
+        message: "Categories Fetch Succesfully.",
+        categories,
+        page,
+        totalPages,
+        totalCategories,
+      });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   },
   createCategory: async (req, res) => {
-    const { name } = req.body; // Assuming the request body contains the 'name' parameter
+    const { name } = req.body;
 
     try {
+      const existingCategory = await Category.findOne({ name });
+
+      if (existingCategory) {
+        return res.status(400).json({ error: "Category Already Exists" });
+      }
+
       const newCategory = new Category({ name });
       const savedCategory = await newCategory.save();
-      res.status(201).json(savedCategory); // Sending back the newly created category
+      res.status(201).json(savedCategory);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

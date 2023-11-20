@@ -1,11 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const subcategoryController = require("../controllers/subcategoryController");
-
-// Middleware to validate categoryId (if needed)
-// ... (your categoryId validation middleware)
-
-// GET all subcategories for a specific category
 router.get(
   "/:categoryId/subcategories",
   subcategoryController.getAllSubcategories

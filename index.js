@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const categoryRoutes = require("./routes/categories");
 const subcategoryRoutes = require("./routes/subcategories");
-// const listingRoutes = require("./routes/listings");
+const listingRoutes = require("./routes/listings");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
@@ -25,10 +25,7 @@ db.on("disconnected", () => {
 // Use the routes
 app.use("/categories", categoryRoutes, subcategoryRoutes);
 
-// app.use(
-//   "/categories/:categoryId/subcategories/:subcategoryId/listings",
-//   listingRoutes
-// );
+app.use("/listings", listingRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

@@ -4,9 +4,32 @@ const subcategoryController = {
   getAllSubcategories: async (req, res) => {
     try {
       const categoryId = req.params.categoryId; // Extract categoryId from the request parameters
-      const subcategories = await Subcategory.findById(categoryId); // Filter subcategories by categoryId
-      console.log(subcategories);
-      res.json(subcategories);
+      const page = parseInt(req.query.page) || 1; // Extract page from query params or default to page 1
+      const limit = parseInt(req.query.limit) || 10; // Extract limit from query params or default to 10
+      const skip = (page - 1) * limit;
+
+      const totalSubcategories = await Subcategory.countDocuments({
+        categoryId,
+      }); // Get the total count of subcategories for the categoryId
+
+      const totalPages = Math.ceil(totalSubcategories / limit);
+
+      const subcategories = await Subcategory.find({ categoryId })
+        .skip(skip)
+        .limit(limit);
+
+      res.setHeader("X-Current-Page", page);
+      res.setHeader("X-Last-Page", totalPages);
+      res.setHeader("X-Total-Pages", totalPages);
+      res.setHeader("X-Total-Count", totalSubcategories);
+      res.json({
+        status: true,
+        message: "Sub-Categories Fetch Succesfully.",
+        subcategories,
+        page,
+        totalPages,
+        totalSubcategories,
+      });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
