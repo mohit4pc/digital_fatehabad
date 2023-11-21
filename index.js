@@ -1,10 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 const categoryRoutes = require("./routes/categories");
 const subcategoryRoutes = require("./routes/subcategories");
 const listingRoutes = require("./routes/listings");
 require("dotenv").config();
 const app = express();
+app.use(cors());
+
 app.use(express.json());
 
 // Connect to MongoDB using Mongoose
