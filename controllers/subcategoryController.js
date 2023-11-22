@@ -85,6 +85,14 @@ const subcategoryController = {
       res.status(500).json({ error: err.message });
     }
   },
+  getSubCategoriesCount: async (req, res) => {
+    try {
+      const categoriesCount = await Subcategory.countDocuments();
+      res.json({ count: categoriesCount });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 };
 
 module.exports = subcategoryController;

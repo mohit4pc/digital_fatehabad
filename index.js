@@ -5,6 +5,7 @@ const cors = require("cors");
 const categoryRoutes = require("./routes/categories");
 const subcategoryRoutes = require("./routes/subcategories");
 const listingRoutes = require("./routes/listings");
+const authRoutes = require("./routes/authRoutes");
 require("dotenv").config();
 const app = express();
 app.use(cors());
@@ -30,6 +31,7 @@ db.on("disconnected", () => {
 app.use("/categories", categoryRoutes, subcategoryRoutes);
 
 app.use("/listings", listingRoutes);
+app.use("/auth", authRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

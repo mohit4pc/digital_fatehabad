@@ -96,6 +96,14 @@ const listingController = {
       res.status(500).json({ error: err.message });
     }
   },
+  getListingsCount: async (req, res) => {
+    try {
+      const listingsCount = await Listing.countDocuments();
+      res.json({ count: listingsCount });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 };
 
 module.exports = listingController;

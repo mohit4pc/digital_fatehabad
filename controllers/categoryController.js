@@ -73,6 +73,14 @@ const categoryController = {
       res.status(500).json({ error: err.message });
     }
   },
+  getCategoriesCount: async (req, res) => {
+    try {
+      const categoriesCount = await Category.countDocuments();
+      res.json({ count: categoriesCount });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 };
 
 module.exports = categoryController;
