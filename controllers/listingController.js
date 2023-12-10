@@ -99,6 +99,7 @@ const listingController = {
   getListingsCount: async (req, res) => {
     try {
       const listingsCount = await Listing.countDocuments();
+      console.log(listingsCount);
       res.json({ count: listingsCount });
     } catch (err) {
       res.status(500).json({ error: err.message });
